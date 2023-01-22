@@ -7,18 +7,7 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-const router = require('./routes/users');
-
-const routerMovies = require('./routes/movies');
-const {
-  createUser, login, logOut,
-
-} = require('./controllers/users');
-
-const { notFoundError } = require('./controllers/notFound');
-const auth = require('./middlewares/auth');
-const { validateLogin } = require('./middlewares/validator');
+const router = require('./routes/index');
 const { handleErrors } = require('./middlewares/handleErrors');
 const routerCrash = require('./errors/crashTest');
 
@@ -46,20 +35,13 @@ app.use(cors(cosrOptions));
 
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(helmet());
 app.use(cookieParser());
+app.use(helmet());
+app.use(router);
 
 app.use(requestLogger);
 
 app.use(routerCrash);
-
-app.post('/signup', validateLogin, createUser);
-app.post('/signin', validateLogin, login);
-app.post('/logout', logOut);
-
-app.use('/users', auth, router);
-app.use('/cards', auth, routerMovies);
-app.use('*', notFoundError);
 
 app.use(errorLogger);
 app.use(errors());
