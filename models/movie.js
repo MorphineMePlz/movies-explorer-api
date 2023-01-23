@@ -29,7 +29,7 @@ const movieSchema = new mongoose.Schema(
         validator(url) {
           return validator.isURL(url);
         },
-        message: 'URL validation error',
+        message: 'Введены некорректные данные',
       },
       required: true,
     },
@@ -39,7 +39,7 @@ const movieSchema = new mongoose.Schema(
         validator(url) {
           return validator.isURL(url);
         },
-        message: 'URL validation error',
+        message: 'Введены некорректные данные',
       },
       required: true,
     },
@@ -49,7 +49,7 @@ const movieSchema = new mongoose.Schema(
         validator(url) {
           return validator.isURL(url);
         },
-        message: 'URL validation error',
+        message: 'Введены некорректные данные',
       },
       required: true,
     },

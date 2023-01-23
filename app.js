@@ -17,10 +17,10 @@ const app = express();
 
 const allowedCors = [
   'http://localhost:3000',
-  'http://ageidar.nomoredomains.club',
-  'https://ageidar.nomoredomains.club',
-  'http://api.ageidar.nomoredomains.club',
-  'https://api.ageidar.nomoredomains.club',
+  'http://aziz-movies-diplom.nomoredomains.rocks',
+  'https://aziz-movies-diplom.nomoredomains.rocks',
+  'http://api.aziz-movies-diplom.nomoredomains.rocks',
+  'https://api.aziz-movies-diplom.nomoredomains.rocks',
 ];
 
 const cosrOptions = {
