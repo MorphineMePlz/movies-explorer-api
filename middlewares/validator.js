@@ -1,5 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-const { ObjectId } = require('mongoose').Types;
+// const { ObjectId } = require('mongoose').Types;
 const validator = require('validator');
 
 module.exports.validateLogin = celebrate({
@@ -32,7 +32,7 @@ module.exports.validateMovieCreation = celebrate({
         }
         return value;
       }),
-    trailer: Joi.string()
+    trailerLink: Joi.string()
       .required()
       .custom((value) => {
         if (!validator.isURL(value)) {
@@ -56,13 +56,6 @@ module.exports.validateMovieCreation = celebrate({
 
 module.exports.validateMovieId = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string()
-      .required()
-      .custom((value) => {
-        if (!ObjectId.isValid(value)) {
-          throw new Error('Ошибка валидации. Некорректный ID');
-        }
-        return value;
-      }),
+    movieId: Joi.string().hex().length(24),
   }),
 });
