@@ -51,7 +51,7 @@ async function start() {
   try {
     await mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
     app.listen(PORT, () => {
-      console.log(`App is listening on port ${PORT}`);
+      console.log(`App is listening on portik ${PORT}`);
     });
   } catch (error) {
     console.log(error);
