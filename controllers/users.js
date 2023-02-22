@@ -7,32 +7,36 @@ const NotFoundError = require('../errors/NotFoundError');
 const {
   STATUS_CREATED,
 } = require('../utils/constants');
+const { jwtSign, setCookies } = require('../utils/constants');
 
-// const { JWT_SECRET, NODE_ENV } = process.env;
-
-// registration
-
-module.exports.createUser = (req, res, next) => {
-  const {
-    email, password, name,
-  } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      email, password: hash, name,
-    }))
-    .then((user) => res.status(STATUS_CREATED).json({
-      name: user.name,
-      email: user.email,
-      _id: user._id,
-    }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Введены некорректные данные'));
-      } if (err.code === 11000) {
-        return next(new ConflictError(`Данный ${email} уже существует`));
-      }
-      return next(err);
+module.exports.createUser = async (req, res, next) => {
+  try {
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const { name, email } = req.body;
+    const newUser = await User.create({
+      name: escape(name),
+      email,
+      password: hash,
     });
+    const token = jwtSign(newUser, '7d');
+
+    return res
+      .status(STATUS_CREATED)
+      .cookie('jwt', token, setCookies(3600000 * 24 * 7))
+      .json({
+        name: newUser.name,
+        email: newUser.email,
+        _id: newUser._id,
+      });
+  } catch (e) {
+    if (e.name === 'ValidationError') {
+      return next(new BadRequestError('Введены некорректные данные'));
+    }
+    if (e.code === 11000) {
+      return next(new ConflictError('Данные уже существует'));
+    }
+    return next(e);
+  }
 };
 
 // login
