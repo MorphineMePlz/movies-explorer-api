@@ -14,7 +14,7 @@ module.exports.createUser = async (req, res, next) => {
     const hash = await bcrypt.hash(req.body.password, 10);
     const { name, email } = req.body;
     const newUser = await User.create({
-      name: escape(name),
+      name,
       email,
       password: hash,
     });
